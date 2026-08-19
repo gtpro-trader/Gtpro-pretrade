@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTPRO — ชุดเครื่องมือก่อนเทรด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F6F2;
+    --surface:#FFFFFF;
+    --surface-2:#FBFAF6;
+    --border:#E4E0D4;
+    --ink:#16213E;
+    --ink-soft:#5B6478;
+    --ink-faint:#9096A6;
+    --gold:#A07A22;
+    --gold-deep:#7A5C19;
+    --gold-soft:#F3E8CC;
+    --good:#2F7D5B;
+    --good-soft:#E3F1EA;
+    --warn:#B8860B;
+    --warn-soft:#FBF1D6;
+    --bad:#B23A2E;
+    --bad-soft:#FBE7E3;
+    --radius-lg:18px;
+    --radius-md:12px;
+    --radius-sm:8px;
+    --shadow: 0 1px 2px rgba(22,33,62,.05), 0 10px 30px -14px rgba(22,33,62,.16);
+    --font-display:'Chakra Petch', sans-serif;
+    --font-body:'IBM Plex Sans Thai', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:
+      radial-gradient(1200px 600px at 100% -10%, #FFFDF6 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding: 28px 18px 80px;
+  }
+  .wrap{ max-width: 880px; margin: 0 auto; }
+
+  /* ---------- Header ---------- */
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--gold-deep);
+    display:flex; align-items:center; gap:8px;
+    margin-bottom:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:16px; height:2px; background:var(--gold);
+    display:inline-block;
+  }
+  h1.title{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size: clamp(26px, 4.2vw, 36px);
+    letter-spacing:-.01em;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  p.subtitle{
+    margin:0 0 26px;
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width: 54ch;
+  }
+
+  /* ---------- Account settings bar ---------- */
+  .acct-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    padding:18px 20px;
+    margin-bottom:22px;
+  }
+  .acct-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .acct-head h2{
+    font-family:var(--font-display);
+    font-size:15px;
+    margin:0;
+    letter-spacing:.01em;
+    color:var(--ink);
+  }
+  .acct-head .save-tag{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--ink-faint);
+    display:flex; align-items:center; gap:6px;
+  }
+  .save-dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--good);
+  }
+  .acct-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap:14px;
+  }
+  @media (max-width:680px){ .acct-grid{ grid-template-columns:1fr; } }
+
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{
+    font-size:12.5px; color:var(--ink-soft); font-weight:600;
+  }
+  .field .hint{
+    font-size:11.5px; color:var(--ink-faint); font-weight:400;
+    margin-top:-2px;
+  }
+  .input-row{ position:relative; }
+  input[type="text"], input[type="number"], select{
+    width:100%;
+    font-family:var(--font-mono);
+    font-size:14.5px;
+    padding:10px 12px;
+    border-radius:var(--radius-sm);
+    border:1px solid var(--border);
+    background:var(--surface-2);
+    color:var(--ink);
+    outline:none;
+    transition:border-color .15s, background .15s;
+  }
+  select{ font-family:var(--font-body); font-size:14px; }
+  input:focus, select:focus{
+    border-color:var(--gold);
+    background:#fff;
+  }
+  .unit{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    font-family:var(--font-mono); font-size:12px; color:var(--ink-faint);
+    pointer-events:none;
+  }
+  .btn-link{
+    background:none; border:none; padding:0;
+    font-family:var(--font-body); font-size:12.5px; font-weight:600;
+    color:var(--gold-deep); cursor:pointer; text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .btn-link:hover{ color:var(--gold); }
+
+  /* ---------- Tabs ---------- */
+  .tabs{
+    display:flex; gap:6px; margin-bottom:18px;
+    border-bottom:1px solid var(--border);
+  }
+  .tab-btn{
+    font-family:var(--font-display);
+    font-size:13.5px; font-weight:600;
+    padding:11px 16px 13px;
+    background:none; border:none; cursor:pointer;
+    color:var(--ink-faint);
+    border-bottom:2px solid transparent;
+    margin-bottom:-1px;
+    transition:color .15s, border-color .15s;
+    white-space:nowrap;
+  }
+  .tab-btn:hover{ color:var(--ink-soft); }
+  .tab-btn.active{
+    color:var(--ink);
+    border-bottom-color:var(--gold);
+  }
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; animation: fadein .25s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+  /* ---------- Calculator layout ---------- */
+  .calc-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:16px;
+    align-items:start;
+  }
+  @media (max-width:680px){ .calc-grid{ grid-template-columns:1fr; } }
+
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    padding:20px;
+  }
+  .panel h3{
+    font-family:var(--font-display);
+    font-size:14px; margin:0 0 16px;
+    color:var(--ink);
+    display:flex; align-items:center; gap:8px;
+  }
+  .panel h3 .num{
+    font-family:var(--font-mono);
+    font-size:11px; color:var(--gold-deep);
+    background:var(--gold-soft);
+    width:20px; height:20px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .field-stack{ display:flex; flex-direction:column; gap:14px; }
+  .field-2col{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+  /* result panel */
+  .result-panel{
+    background: linear-gradient(180deg, #17223F 0%, #101A33 100%);
+    border-radius:var(--radius-lg);
+    padding:22px;
+    color:#fff;
+    box-shadow:var(--shadow);
+    position:sticky;
+    top:18px;
+  }
+  .result-label{
+    font-family:var(--font-mono);
+    font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:#B9C2DA;
+    margin-bottom:4px;
+  }
+  .result-big{
+    font-family:var(--font-display);
+    font-size:38px; font-weight:700;
+    color:#fff;
+    line-height:1.1;
+    margin-bottom:2px;
+  }
+  .result-big .unit-small{
+    font-size:16px; color:#B9C2DA; font-weight:500; margin-left:6px;
+  }
+  .result-sub{
+    font-family:var(--font-mono);
+    font-size:12.5px; color:#8E9AC0;
+    margin-bottom:18px;
+  }
+  .divider{ height:1px; background:rgba(255,255,255,.1); margin:16px 0; }
+  .kv-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:13px; padding:6px 0;
+    border-bottom:1px dashed rgba(255,255,255,.08);
+  }
+  .kv-row:last-child{ border-bottom:none; }
+  .kv-row .k{ color:#9AA5C4; }
+  .kv-row .v{ font-family:var(--font-mono); font-weight:600; color:#fff; }
+
+  .badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:11.5px; font-weight:600;
+    padding:5px 10px; border-radius:999px;
+    margin-top:2px;
+  }
+  .badge.good{ background:var(--good-soft); color:var(--good); }
+  .badge.warn{ background:var(--warn-soft); color:var(--warn); }
+  .badge.bad{ background:var(--bad-soft); color:var(--bad); }
+  .badge-dark.good{ background:rgba(47,125,91,.25); color:#8FE0BB; }
+  .badge-dark.warn{ background:rgba(184,134,11,.25); color:#F1CB6C; }
+  .badge-dark.bad{ background:rgba(178,58,46,.25); color:#F5A79C; }
+
+  .note{
+    font-size:12.5px; color:#B9C2DA;
+    background:rgba(255,255,255,.06);
+    border-left:2px solid var(--gold);
+    padding:10px 12px;
+    border-radius:0 8px 8px 0;
+    margin-top:14px;
+  }
+
+  /* ---------- Gauge ---------- */
+  .gauge-wrap{ margin-top:16px; }
+  .gauge-track{
+    position:relative;
+    height:10px; border-radius:999px;
+    background: linear-gradient(90deg, #2F7D5B 0%, #2F7D5B 33%, #B8860B 33%, #B8860B 66%, #B23A2E 66%, #B23A2E 100%);
+    opacity:.35;
+  }
+  .gauge-fill-mark{
+    position:absolute; top:-4px;
+    width:2px; height:18px; background:#fff;
+    border-radius:2px;
+    box-shadow: 0 0 0 3px rgba(255,255,255,.15);
+    transition:left .2s ease;
+  }
+  .gauge-labels{
+    display:flex; justify-content:space-between;
+    font-family:var(--font-mono); font-size:10.5px; color:#8E9AC0;
+    margin-top:8px;
+  }
+
+  .warning-banner{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--bad-soft); border:1px solid #EFC6BF;
+    border-radius:var(--radius-sm);
+    padding:10px 12px; font-size:12.5px; color:var(--bad);
+    margin-top:14px;
+  }
+  .warning-banner.warn2{ background:var(--warn-soft); border-color:#EBD9A0; color:var(--warn); }
+
+  footer{
+    text-align:center; margin-top:40px;
+    font-family:var(--font-mono); font-size:11px; color:var(--ink-faint);
+  }
+
+  /* ---------- Grid/Martingale tab ---------- */
+  .grid-input-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap:14px;
+  }
+  .grid-summary{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:14px;
+    margin-bottom:16px;
+  }
+  @media (max-width:680px){ .grid-summary{ grid-template-columns:1fr; } }
+  .summary-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    padding:16px 18px;
+  }
+  .summary-label{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--ink-faint);
+    margin-bottom:6px;
+  }
+  .summary-value{
+    font-family:var(--font-display); font-size:24px; font-weight:700;
+    color:var(--ink);
+  }
+  .summary-value.good{ color:var(--good); }
+  .summary-value.bad{ color:var(--bad); }
+  .summary-sub{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint);
+    margin-top:2px;
+  }
+  .grid-table-scroll{
+    max-height:520px; overflow-y:auto;
+  }
+  table.grid-table{
+    width:100%; border-collapse:collapse; font-size:13px;
+  }
+  table.grid-table thead th{
+    position:sticky; top:0; z-index:1;
+    text-align:left; font-family:var(--font-mono); font-weight:600;
+    font-size:10.5px; color:var(--ink-faint); text-transform:uppercase;
+    letter-spacing:.04em;
+    background:var(--surface-2);
+    padding:10px 14px; border-bottom:1px solid var(--border);
+  }
+  table.grid-table td{
+    padding:9px 14px; border-bottom:1px solid var(--border);
+    font-family:var(--font-mono); font-size:13px;
+    color:var(--ink);
+  }
+  table.grid-table tr.row-pending td{
+    color:var(--ink-faint); opacity:.55;
+  }
+  table.grid-table td.pl-good{ color:var(--good); font-weight:600; }
+  table.grid-table td.pl-bad{ color:var(--bad); font-weight:600; }
+  .status-chip{
+    font-family:var(--font-body); font-size:11px; font-weight:600;
+    padding:3px 9px; border-radius:999px;
+  }
+  .status-chip.filled{ background:var(--good-soft); color:var(--good); }
+  .status-chip.pending{ background:var(--surface-2); color:var(--ink-faint); border:1px solid var(--border); }
+
+  /* ---------- Plain-language summary (Lot tab) ---------- */
+  .plain-summary{
+    background:var(--gold-soft);
+    border:1px solid rgba(160,122,34,.18);
+    border-radius:var(--radius-md);
+    padding:12px 14px;
+    margin-bottom:16px;
+    font-size:13.5px;
+    line-height:1.6;
+    color:var(--ink);
+  }
+  .plain-summary b{ color:var(--ink); font-family:var(--font-mono); }
+  .plain-summary .plain-amount{
+    font-family:var(--font-display);
+    font-weight:700;
+    color:var(--gold-deep);
+  }
+
+  .quickref-title{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.08em;
+    text-transform:uppercase; color:#8E9AC0;
+    margin:16px 0 8px;
+  }
+  table.quickref-table{
+    width:100%; border-collapse:collapse; font-size:12.5px;
+    background:var(--gold-soft);
+    border-radius:var(--radius-sm);
+    overflow:hidden;
+  }
+  table.quickref-table th{
+    text-align:left; font-family:var(--font-mono); font-weight:600;
+    font-size:10px; color:var(--gold-deep); text-transform:uppercase;
+    letter-spacing:.04em;
+    padding:6px 8px; border-bottom:1px solid rgba(160,122,34,.18);
+  }
+  table.quickref-table td{
+    padding:7px 8px; font-family:var(--font-mono); color:var(--ink);
+    border-bottom:1px dashed rgba(160,122,34,.18);
+  }
+  table.quickref-table tr.qr-active td{
+    background:#E8CE93;
+    color:var(--gold-deep); font-weight:700;
+  }
+  table.quickref-table tr:last-child td{ border-bottom:none; }
+  table.quickref-table tbody tr{ cursor:pointer; transition:background .12s; }
+  table.quickref-table tbody tr:hover td{ background:rgba(160,122,34,.10); }
+  table.quickref-table tbody tr.qr-active td{
+    background:#E8CE93 !important;
+    color:var(--gold-deep); font-weight:700;
+  }
+
+  /* ---------- Mode toggle (Lot tab) ---------- */
+  .mode-toggle{
+    display:flex; gap:6px;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:4px;
+    margin-bottom:16px;
+  }
+  .mode-btn{
+    flex:1;
+    font-family:var(--font-body); font-size:12.5px; font-weight:600;
+    padding:8px 10px; border-radius:6px;
+    border:none; background:none; cursor:pointer;
+    color:var(--ink-soft);
+    transition:background .15s, color .15s;
+  }
+  .mode-btn:hover{ color:var(--ink); }
+  .mode-btn.active{
+    background:var(--surface);
+    color:var(--gold-deep);
+    box-shadow:0 1px 2px rgba(22,33,62,.08);
+  }
+
+  /* Buy/Sell direction toggle — pastel green/red */
+  #lotDirToggle .mode-btn[data-dir="buy"]:hover{ color:var(--good); }
+  #lotDirToggle .mode-btn[data-dir="sell"]:hover{ color:var(--bad); }
+  #lotDirToggle .mode-btn[data-dir="buy"].active{
+    background:var(--good-soft);
+    color:var(--good);
+  }
+  #lotDirToggle .mode-btn[data-dir="sell"].active{
+    background:var(--bad-soft);
+    color:var(--bad);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">GTPRO · PRE-TRADE TOOLKIT</div>
+  <h1 class="title">ชุดเครื่องมือก่อนเทรด</h1>
+  <p class="subtitle">คำนวณ Lot, Risk/Reward และตั้งค่า GTPRO SEMI EA ให้ชัดเจนก่อนกดเข้าออเดอร์ทุกครั้ง — ลดการคำนวณผิดพลาด เพิ่มวินัยการเทรด</p>
+
+  <!-- Account settings -->
+  <div class="acct-card">
+    <div class="acct-head">
+      <h2>บัญชีของฉัน</h2>
+      <div class="save-tag"><span class="save-dot"></span>บันทึกอัตโนมัติในเครื่องนี้</div>
+    </div>
+    <div class="acct-grid">
+      <div class="field">
+        <label for="acctBalance">ยอดเงินในพอร์ตปัจจุบัน</label>
+        <div class="input-row">
+          <input type="number" id="acctBalance" min="0" step="1" value="3000">
+          <span class="unit">$</span>
+        </div>
+        <span class="hint">≈ <span id="acctBalanceTHB">฿0</span> · ระบบจะติดตามยอดสูงสุด (High Watermark) และ Risk % ที่เหมาะสมให้อัตโนมัติ</span>
+      </div>
+      <div class="field">
+        <label for="acctFxRate">อัตราแลกเปลี่ยน USD → THB</label>
+        <div class="input-row">
+          <input type="number" id="acctFxRate" min="0" step="0.01" value="36.50">
+          <span class="unit">บาท/$</span>
+        </div>
+        <span class="hint" id="fxStatus">กำลังอัปเดตอัตโนมัติ… · <button class="btn-link" id="btnRefreshFx" type="button">รีเฟรชอัตรา</button></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="lot">คำนวณ Lot Size</button>
+    <button class="tab-btn" data-tab="rr">คำนวณ Risk/Reward</button>
+    <button class="tab-btn" data-tab="grid">คำนวณ GTPRO SEMI EA</button>
+  </div>
+
+  <!-- Tab 1: Lot Size Calculator -->
+  <div class="tab-panel active" id="tab-lot">
+    <div class="calc-grid">
+      <div class="panel">
+        <h3><span class="num">1</span>ข้อมูลออเดอร์</h3>
+
+        <div class="mode-toggle" id="lotModeToggle">
+          <button type="button" class="mode-btn active" data-mode="forward">Risk % → Lot Size</button>
+          <button type="button" class="mode-btn" data-mode="reverse">Lot Size → Risk %</button>
+        </div>
+
+        <div class="field-stack">
+          <div class="field" id="lotRiskFieldWrap">
+            <label for="lotRisk">Risk % ต่อออเดอร์นี้</label>
+            <div class="input-row">
+              <input type="number" id="lotRisk" min="0" step="0.1" value="1">
+              <span class="unit">%</span>
+            </div>
+          </div>
+          <div class="field" id="lotSizeFieldWrap" style="display:none;">
+            <label for="lotSizeInput">Lot Size ที่จะเข้า</label>
+            <div class="input-row">
+              <input type="number" id="lotSizeInput" min="0" step="0.01" value="0.1">
+              <span class="unit">lot</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="lotPoints">ระยะโซน / SL (จุด)</label>
+            <div class="input-row">
+              <input type="number" id="lotPoints" min="0" step="10" value="1000">
+              <span class="unit">จุด</span>
+            </div>
+            <span class="hint">ทองคำ: มูลค่าคงที่ $1 ต่อจุด ต่อ 1 Standard Lot (เหมือนแท็บ Grid)</span>
+          </div>
+
+          <div class="mode-toggle" id="lotDirToggle">
+            <button type="button" class="mode-btn active" data-dir="buy">Buy</button>
+            <button type="button" class="mode-btn" data-dir="sell">Sell</button>
+          </div>
+
+          <div class="field-2col">
+            <div class="field">
+              <label for="lotZoneEntry">ราคาเข้า (Entry)</label>
+              <input type="number" id="lotZoneEntry" step="0.01" placeholder="เช่น 4210">
+            </div>
+            <div class="field">
+              <label for="lotZoneSL">ราคา SL</label>
+              <input type="number" id="lotZoneSL" step="0.01" placeholder="เช่น 4200">
+            </div>
+          </div>
+          <span class="hint">ใส่ราคาเข้า + ราคา SL ถ้ามี ระบบจะคำนวณระยะเป็นจุดให้อัตโนมัติตามทิศทาง Buy/Sell — ไม่ใส่ก็ได้ ใช้ค่าระยะจุดด้านบนตรงๆ</span>
+        </div>
+      </div>
+
+      <div class="result-panel">
+        <div class="result-label" id="lotResultLabel">Lot Size แนะนำ</div>
+        <div class="result-big" id="lotResultLot">0.00<span class="unit-small" id="lotResultUnit">lot</span></div>
+        <div class="result-sub" id="lotResultBadgeWrap"></div>
+
+        <div class="plain-summary" id="lotPlainSummary"></div>
+
+        <div class="divider"></div>
+        <div class="kv-row"><span class="k">เงินที่ยอมเสี่ยง</span><span class="v" id="lotRiskAmount">$0</span></div>
+        <div class="kv-row"><span class="k">≈ เทียบเท่าบาท</span><span class="v" id="lotRiskAmountTHB">฿0</span></div>
+        <div class="kv-row"><span class="k">ระยะโซน (จุด)</span><span class="v" id="lotSLPip">0 จุด</span></div>
+        <div class="kv-row"><span class="k">มูลค่าความเสี่ยงต่อ Lot</span><span class="v" id="lotPerLotRisk">$0</span></div>
+
+        <div class="gauge-wrap">
+          <div class="gauge-track"><div class="gauge-fill-mark" id="lotGaugeMark"></div></div>
+          <div class="gauge-labels"><span>0%</span><span>1%</span><span>2%</span><span>3%+</span></div>
+        </div>
+        <div id="lotWarning"></div>
+
+        <div class="quickref-title">มือใหม่กดเลือกตรงนี้ได้เลย: เลือก Lot Size แล้วดู Risk % ทันที</div>
+        <table class="quickref-table" id="lotQuickRefTable">
+          <thead><tr><th>Lot Size</th><th>Risk %</th><th>เสี่ยงกี่ $</th><th>≈ บาท</th></tr></thead>
+          <tbody id="lotQuickRefBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 2: Risk/Reward Calculator -->
+  <div class="tab-panel" id="tab-rr">
+    <div class="calc-grid">
+      <div class="panel">
+        <h3><span class="num">2</span>จุดเข้า / SL / TP</h3>
+        <div class="field-stack">
+          <div class="field">
+            <label for="rrDirection">ทิศทางออเดอร์</label>
+            <select id="rrDirection">
+              <option value="buy">Buy (ซื้อ)</option>
+              <option value="sell">Sell (ขาย)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="rrEntry">ราคาเข้า (Entry)</label>
+            <input type="number" id="rrEntry" step="0.00001" value="1800.00">
+          </div>
+          <div class="field-2col">
+            <div class="field">
+              <label for="rrSL">ราคา Stop Loss</label>
+              <input type="number" id="rrSL" step="0.00001" value="1795.00">
+            </div>
+            <div class="field">
+              <label for="rrTP">ราคา Take Profit</label>
+              <input type="number" id="rrTP" step="0.00001" value="1810.00">
+            </div>
+          </div>
+          <div class="field">
+            <label for="rrThreshold">เกณฑ์ RR ขั้นต่ำที่ยอมรับได้</label>
+            <div class="input-row">
+              <input type="number" id="rrThreshold" min="0" step="0.1" value="1.5">
+              <span class="unit">: 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-panel">
+        <div class="result-label">Risk / Reward Ratio</div>
+        <div class="result-big" id="rrResultRatio">0.00<span class="unit-small">: 1</span></div>
+        <div class="result-sub" id="rrResultBadgeWrap"></div>
+
+        <div class="divider"></div>
+        <div class="kv-row"><span class="k">ระยะเสี่ยง (Entry → SL)</span><span class="v" id="rrRiskDist">0</span></div>
+        <div class="kv-row"><span class="k">ระยะทำกำไร (Entry → TP)</span><span class="v" id="rrRewardDist">0</span></div>
+        <div id="rrDirWarning"></div>
+        <div id="rrThresholdWarning"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3: GTPRO SEMI EA Calculator -->
+  <div class="tab-panel" id="tab-grid">
+    <div class="panel" style="margin-bottom:16px;">
+      <h3><span class="num">3</span>ตั้งค่ากริด</h3>
+      <div class="grid-input-grid">
+        <div class="field">
+          <label for="gridDirection">ทิศทาง</label>
+          <select id="gridDirection">
+            <option value="buy">Buy (ไม้ถัดไปเข้าราคาต่ำลง)</option>
+            <option value="sell">Sell (ไม้ถัดไปเข้าราคาสูงขึ้น)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="gridEntry1">ราคาเข้าไม้แรก</label>
+          <input type="number" id="gridEntry1" step="0.01" value="4200">
+        </div>
+        <div class="field">
+          <label for="gridCurrentPrice">ราคาปัจจุบัน (ราคาที่วิ่งไปถึง)</label>
+          <input type="number" id="gridCurrentPrice" step="0.01" value="4210">
+        </div>
+        <div class="field">
+          <label for="gridBaseLot">Lot เริ่มต้น (ไม้แรก)</label>
+          <input type="number" id="gridBaseLot" min="0" step="0.01" value="0.1">
+        </div>
+        <div class="field">
+          <label for="gridMultiple">Multiple (ตัวคูณ Lot ไม้ถัดไป)</label>
+          <input type="number" id="gridMultiple" min="1" step="0.01" value="1.1">
+        </div>
+        <div class="field">
+          <label for="gridNearby">NearBy (ระยะห่างแต่ละไม้)</label>
+          <div class="input-row">
+            <input type="number" id="gridNearby" min="1" step="1" value="100">
+            <span class="unit">จุด</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="gridSL">Stop Loss (SL)</label>
+          <div class="input-row">
+            <input type="number" id="gridSL" min="0" step="1" value="1000">
+            <span class="unit">จุด</span>
+          </div>
+          <span class="hint" id="gridSLHint">≈ ราคา SL 4190.00 · คำนวณได้ 10 ไม้</span>
+        </div>
+        <div class="field">
+          <label for="gridFilledOrders">จำนวนไม้ที่เข้าไปแล้วจริง</label>
+          <input type="number" id="gridFilledOrders" min="0" step="1" value="10">
+          <span class="hint" id="gridFilledHint">ไม้เกินจำนวนนี้จะแสดงแบบจางๆ (ยังไม่เข้า) · สูงสุด 10 ไม้ตาม SL</span>
+        </div>
+      </div>
+      <p style="font-size:11.5px; color:var(--ink-faint); margin:14px 0 0;">* คำนวณตามมาตรฐานทอง (XAUUSD): 100 จุด = $1 และมูลค่า 1 จุดต่อ Lot มาตรฐาน = $1 เช่น Lot 0.1 วิ่ง 200 จุด = ±$20</p>
+    </div>
+
+    <div class="grid-summary">
+      <div class="summary-card">
+        <div class="summary-label">กำไร/ขาดทุนรวม (ไม้ที่เข้าแล้ว)</div>
+        <div class="summary-value" id="gridTotalPL">$0.00</div>
+        <div class="summary-sub" id="gridTotalPLTHB">≈ ฿0</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Lot รวม (ไม้ที่เข้าแล้ว)</div>
+        <div class="summary-value" id="gridTotalLot">0.00</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">ราคาเฉลี่ยทุน (Breakeven)</div>
+        <div class="summary-value" id="gridBreakeven">0.00</div>
+        <div class="summary-sub" id="gridBreakevenNote">ราคาที่กำไร/ขาดทุนรวม = 0</div>
+      </div>
+    </div>
+
+    <div class="panel" style="padding:0; overflow:hidden;">
+      <div class="grid-table-scroll">
+        <table class="grid-table">
+          <thead>
+            <tr><th>ไม้ที่</th><th>Lot</th><th>ราคาเข้า</th><th>ระยะห่างจากราคาปัจจุบัน</th><th>กำไร/ขาดทุน ($)</th><th>สถานะ</th></tr>
+          </thead>
+          <tbody id="gridTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>GTPRO Pre-Trade Toolkit · ข้อมูลนี้เป็นเครื่องมือช่วยคำนวณเท่านั้น ไม่ใช่คำแนะนำการลงทุน โปรดตรวจสอบค่าจริงกับแพลตฟอร์มเทรดของคุณก่อนใช้งาน</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORAGE_KEY = 'gtpro_pretrade_toolkit_v1';
+
+  var defaultGrid = {
+    direction: 'buy',
+    entry1: 4200,
+    currentPrice: 4210,
+    baseLot: 0.1,
+    multiple: 1.1,
+    nearby: 100,
+    sl: 1000,
+    filledOrders: 10
+  };
+
+  var state = loadState();
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        if(!parsed.grid) parsed.grid = Object.assign({}, defaultGrid);
+        return parsed;
+      }
+    }catch(e){}
+    return {
+      balance: 3000,
+      highWM: 3000,
+      fxRate: 36.5,
+      fxUpdated: null,
+      grid: Object.assign({}, defaultGrid)
+    };
+  }
+
+  function saveState(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  function fmtTHB(n){
+    if(isNaN(n)) n = 0;
+    return '฿' + n.toLocaleString('th-TH', {maximumFractionDigits:2});
+  }
+  function fmtUSD(n){
+    if(isNaN(n)) n = 0;
+    return '$' + n.toLocaleString('en-US', {maximumFractionDigits:2});
+  }
+  function toTHB(usd){
+    return (parseFloat(usd) || 0) * (state.fxRate || 0);
+  }
+  function fmtNum(n, d){
+    if(isNaN(n)) n = 0;
+    return n.toLocaleString('th-TH', {minimumFractionDigits:d, maximumFractionDigits:d});
+  }
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+  /* ---------------- Tabs ---------------- */
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var tabPanels = document.querySelectorAll('.tab-panel');
+  function switchTab(name){
+    tabBtns.forEach(function(b){ b.classList.toggle('active', b.dataset.tab === name); });
+    tabPanels.forEach(function(p){ p.classList.toggle('active', p.id === 'tab-' + name); });
+  }
+  tabBtns.forEach(function(b){
+    b.addEventListener('click', function(){ switchTab(b.dataset.tab); });
+  });
+
+  /* ---------------- Account settings binding ---------------- */
+  var elBalance = document.getElementById('acctBalance');
+
+  elBalance.value = state.balance;
+  // keep High Watermark in sync with the highest balance ever entered (auto-tracked, no manual field)
+  state.highWM = Math.max(state.highWM || 0, state.balance || 0);
+
+  function renderAcctHints(){
+    document.getElementById('acctBalanceTHB').textContent = fmtTHB(toTHB(state.balance));
+  }
+
+  elBalance.addEventListener('input', function(){
+    state.balance = parseFloat(elBalance.value) || 0;
+    state.highWM = Math.max(state.highWM || 0, state.balance); // auto-track high watermark
+    saveState();
+    renderAcctHints();
+  });
+
+  // seed lot-tab risk with a safe standard default (1% per order — standard risk-management guideline)
+  document.getElementById('lotRisk').value = 1;
+
+  /* ---------------- Exchange rate (USD -> THB) ---------------- */
+  var elFxRate = document.getElementById('acctFxRate');
+  var elFxStatus = document.getElementById('fxStatus');
+  elFxRate.value = state.fxRate;
+
+  function renderFxStatus(){
+    if(state.fxUpdated){
+      var d = new Date(state.fxUpdated);
+      var timeStr = d.toLocaleString('th-TH', {hour:'2-digit', minute:'2-digit', day:'2-digit', month:'2-digit'});
+      elFxStatus.innerHTML = 'อัปเดตล่าสุด ' + timeStr + ' · <button class="btn-link" id="btnRefreshFx" type="button">รีเฟรชอัตรา</button>';
+    } else {
+      elFxStatus.innerHTML = 'ยังไม่ได้อัปเดตอัตโนมัติ (ใช้ค่าที่ตั้งเอง) · <button class="btn-link" id="btnRefreshFx" type="button">รีเฟรชอัตรา</button>';
+    }
+    document.getElementById('btnRefreshFx').addEventListener('click', fetchFxRate);
+  }
+
+  function fetchFxRate(){
+    elFxStatus.textContent = 'กำลังอัปเดตอัตโนมัติ…';
+    fetch('https://open.er-api.com/v6/latest/USD')
+      .then(function(res){ return res.json(); })
+      .then(function(data){
+        if(data && data.rates && data.rates.THB){
+          state.fxRate = data.rates.THB;
+          state.fxUpdated = new Date().toISOString();
+          elFxRate.value = Math.round(state.fxRate * 100) / 100;
+          saveState();
+          renderFxStatus();
+          renderAll();
+        } else {
+          throw new Error('no rate');
+        }
+      })
+      .catch(function(){
+        elFxStatus.innerHTML = 'อัปเดตอัตโนมัติไม่สำเร็จ (ใช้ค่าที่ตั้งเองแทน) · <button class="btn-link" id="btnRefreshFx" type="button">ลองอีกครั้ง</button>';
+        document.getElementById('btnRefreshFx').addEventListener('click', fetchFxRate);
+      });
+  }
+
+  elFxRate.addEventListener('input', function(){
+    state.fxRate = parseFloat(elFxRate.value) || 0;
+    saveState();
+    renderAll();
+  });
+
+  renderFxStatus();
+  fetchFxRate(); // attempt auto-update on load; falls back silently to stored/manual rate
+
+  /* ================= TAB 1: LOT SIZE CALCULATOR ================= */
+  var lotRisk = document.getElementById('lotRisk');
+  var lotSizeInput = document.getElementById('lotSizeInput');
+  var lotPoints = document.getElementById('lotPoints');
+  var lotZoneEntry = document.getElementById('lotZoneEntry');
+  var lotZoneSL = document.getElementById('lotZoneSL');
+  var lotRiskFieldWrap = document.getElementById('lotRiskFieldWrap');
+  var lotSizeFieldWrap = document.getElementById('lotSizeFieldWrap');
+  var lotMode = 'forward'; // 'forward': Risk% -> Lot | 'reverse': Lot -> Risk%
+  var lotDir = 'buy'; // 'buy' or 'sell' — controls how Entry/SL price convert to points
+  var LOT_POINT_VALUE_PER_LOT = 1; // $ per point per 1.0 standard lot (gold standard — same as Grid tab)
+  var LOT_TICK_VALUE = 0.01;       // price units per point (gold: 1 point = 0.01 price)
+
+  [lotRisk, lotSizeInput, lotPoints].forEach(function(el){
+    el.addEventListener('input', renderLot);
+    el.addEventListener('change', renderLot);
+  });
+
+  // Optional Entry/SL price (direction-aware) auto-fills the points field
+  function recomputeZonePoints(){
+    var entry = parseFloat(lotZoneEntry.value);
+    var sl = parseFloat(lotZoneSL.value);
+    if(isNaN(entry) || isNaN(sl)) return;
+    // Buy: loses when price falls, so SL is below entry -> count downward (entry - sl)
+    // Sell: loses when price rises, so SL is above entry -> count upward (sl - entry)
+    var diff = lotDir === 'buy' ? (entry - sl) : (sl - entry);
+    if(diff > 0){
+      lotPoints.value = Math.round(diff / LOT_TICK_VALUE);
+    }
+  }
+
+  [lotZoneEntry, lotZoneSL].forEach(function(el){
+    el.addEventListener('input', function(){
+      recomputeZonePoints();
+      renderLot();
+    });
+  });
+
+  document.querySelectorAll('#lotDirToggle .mode-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      lotDir = btn.dataset.dir;
+      document.querySelectorAll('#lotDirToggle .mode-btn').forEach(function(b){
+        b.classList.toggle('active', b === btn);
+      });
+      recomputeZonePoints();
+      renderLot();
+    });
+  });
+
+  document.querySelectorAll('#lotModeToggle .mode-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      lotMode = btn.dataset.mode;
+      document.querySelectorAll('#lotModeToggle .mode-btn').forEach(function(b){
+        b.classList.toggle('active', b === btn);
+      });
+      lotRiskFieldWrap.style.display = lotMode === 'forward' ? '' : 'none';
+      lotSizeFieldWrap.style.display = lotMode === 'reverse' ? '' : 'none';
+      renderLot();
+    });
+  });
+
+  function renderLot(){
+    var balance = state.balance;
+    var points = parseFloat(lotPoints.value) || 0;
+    var perLotRisk = points * LOT_POINT_VALUE_PER_LOT;
+
+    var riskPct, riskAmount, lotRounded;
+
+    if(lotMode === 'forward'){
+      riskPct = parseFloat(lotRisk.value) || 0;
+      riskAmount = balance * (riskPct / 100);
+      var lotSize = perLotRisk > 0 ? riskAmount / perLotRisk : 0;
+      lotRounded = Math.floor(lotSize * 100) / 100; // round down to 0.01 step, never over-risk
+
+      document.getElementById('lotResultLabel').textContent = 'Lot Size แนะนำ';
+      document.getElementById('lotResultLot').innerHTML = fmtNum(lotRounded, 2) + '<span class="unit-small" id="lotResultUnit">lot</span>';
+    } else {
+      lotRounded = parseFloat(lotSizeInput.value) || 0;
+      riskAmount = lotRounded * perLotRisk;
+      riskPct = balance > 0 ? (riskAmount / balance) * 100 : 0;
+
+      document.getElementById('lotResultLabel').textContent = 'Risk % ที่ใช้จริง';
+      document.getElementById('lotResultLot').innerHTML = fmtNum(riskPct, 2) + '<span class="unit-small" id="lotResultUnit">%</span>';
+    }
+
+    document.getElementById('lotRiskAmount').textContent = fmtUSD(riskAmount);
+    document.getElementById('lotRiskAmountTHB').textContent = fmtTHB(toTHB(riskAmount));
+    document.getElementById('lotSLPip').textContent = fmtNum(points, 0) + ' จุด';
+    document.getElementById('lotPerLotRisk').textContent = fmtUSD(perLotRisk);
+
+    var badgeWrap = document.getElementById('lotResultBadgeWrap');
+    var warnWrap = document.getElementById('lotWarning');
+    badgeWrap.innerHTML = '';
+    warnWrap.innerHTML = '';
+
+    var riskLevel = riskPct <= 1 ? 'good' : (riskPct <= 2 ? 'warn' : 'bad');
+    var riskLabel = riskPct <= 1 ? 'ระดับความเสี่ยง: ปลอดภัย' : (riskPct <= 2 ? 'ระดับความเสี่ยง: ระวัง' : 'ระดับความเสี่ยง: สูง');
+    badgeWrap.innerHTML = '<span class="badge badge-dark ' + riskLevel + '">' + riskLabel + '</span>';
+
+    // gauge mark position (scale 0-3%)
+    var pct = clamp(riskPct / 3, 0, 1) * 100;
+    document.getElementById('lotGaugeMark').style.left = pct + '%';
+
+    if(lotMode === 'forward' && lotRounded < 0.01 && perLotRisk > 0){
+      warnWrap.innerHTML = '<div class="warning-banner">Lot ที่คำนวณได้ต่ำกว่าขั้นต่ำ (0.01) — ลองย่อระยะโซนให้แคบลง หรือเพิ่ม Risk % เพื่อให้เข้าออเดอร์ได้</div>';
+    } else if(riskPct > 2){
+      warnWrap.innerHTML = '<div class="warning-banner">Risk % ' + (lotMode === 'reverse' ? 'ที่ใช้จริงตาม Lot นี้' : 'ต่อออเดอร์นี้') + 'สูงกว่าที่แนะนำทั่วไป (1-2%) พิจารณาลดขนาด Lot หรือ Risk %</div>';
+    }
+
+    // Plain-language summary
+    var plainWrap = document.getElementById('lotPlainSummary');
+    if(lotMode === 'forward'){
+      plainWrap.innerHTML =
+        'พอร์ต <b>' + fmtUSD(balance) + '</b> เสี่ยง <b>' + fmtNum(riskPct, 1) + '%</b> ต่อออเดอร์ ' +
+        '&nbsp;=&nbsp; เสี่ยงได้สูงสุด <span class="plain-amount">' + fmtUSD(riskAmount) + '</span>' +
+        ' (≈ ' + fmtTHB(toTHB(riskAmount)) + ') ' +
+        'ถ้าราคาวิ่งเต็มโซน จะเสียเงินก้อนนี้ก้อนเดียว ไม่เกินนี้';
+    } else {
+      plainWrap.innerHTML =
+        'พอร์ต <b>' + fmtUSD(balance) + '</b> เข้า <b>' + fmtNum(lotRounded, 2) + ' lot</b> ' +
+        'ระยะโซน ' + fmtNum(points, 0) + ' จุด' +
+        '&nbsp;=&nbsp; คิดเป็น Risk <span class="plain-amount">' + fmtNum(riskPct, 2) + '%</span>' +
+        ' ของพอร์ต (เสี่ยง ' + fmtUSD(riskAmount) + ' ≈ ' + fmtTHB(toTHB(riskAmount)) + ') ' +
+        'ถ้าราคาวิ่งเต็มโซน';
+    }
+
+    // Quick-pick table: common lot-size presets -> resulting Risk % & $ for beginners.
+    // Tap a row to instantly select that lot size (switches to reverse mode automatically).
+    var lotPresets = [0.01, 0.02, 0.03, 0.05, 0.10, 0.20, 0.30, 0.50, 1.00];
+    var qrBody = document.getElementById('lotQuickRefBody');
+    qrBody.innerHTML = '';
+    lotPresets.forEach(function(presetLot){
+      var presetRiskAmount = presetLot * perLotRisk;
+      var presetRiskPct = balance > 0 ? (presetRiskAmount / balance) * 100 : 0;
+      var tr = document.createElement('tr');
+      var isActive = Math.abs(presetLot - lotRounded) < 0.001;
+      tr.className = isActive ? 'qr-active' : '';
+      tr.innerHTML =
+        '<td>' + fmtNum(presetLot, 2) + ' lot</td>' +
+        '<td>' + fmtNum(presetRiskPct, 2) + '%</td>' +
+        '<td>' + fmtUSD(presetRiskAmount) + '</td>' +
+        '<td>' + fmtTHB(toTHB(presetRiskAmount)) + '</td>';
+      tr.addEventListener('click', function(){
+        // switch to reverse mode ("Lot Size -> Risk %") and fill in the chosen lot
+        lotMode = 'reverse';
+        document.querySelectorAll('#lotModeToggle .mode-btn').forEach(function(b){
+          b.classList.toggle('active', b.dataset.mode === 'reverse');
+        });
+        lotRiskFieldWrap.style.display = 'none';
+        lotSizeFieldWrap.style.display = '';
+        lotSizeInput.value = presetLot;
+        renderLot();
+      });
+      qrBody.appendChild(tr);
+    });
+  }
+
+  /* ================= TAB 2: RISK/REWARD CALCULATOR ================= */
+  var rrDirection = document.getElementById('rrDirection');
+  var rrEntry = document.getElementById('rrEntry');
+  var rrSL = document.getElementById('rrSL');
+  var rrTP = document.getElementById('rrTP');
+  var rrThreshold = document.getElementById('rrThreshold');
+
+  [rrDirection, rrEntry, rrSL, rrTP, rrThreshold].forEach(function(el){
+    el.addEventListener('input', renderRR);
+    el.addEventListener('change', renderRR);
+  });
+
+  function renderRR(){
+    var dir = rrDirection.value;
+    var entry = parseFloat(rrEntry.value) || 0;
+    var sl = parseFloat(rrSL.value) || 0;
+    var tp = parseFloat(rrTP.value) || 0;
+    var threshold = parseFloat(rrThreshold.value) || 0;
+
+    var riskDist = Math.abs(entry - sl);
+    var rewardDist = Math.abs(tp - entry);
+    var rr = riskDist > 0 ? rewardDist / riskDist : 0;
+
+    document.getElementById('rrResultRatio').innerHTML = fmtNum(rr, 2) + '<span class="unit-small">: 1</span>';
+    document.getElementById('rrRiskDist').textContent = fmtNum(riskDist, 5);
+    document.getElementById('rrRewardDist').textContent = fmtNum(rewardDist, 5);
+
+    var badgeWrap = document.getElementById('rrResultBadgeWrap');
+    var passOK = rr >= threshold;
+    badgeWrap.innerHTML = '<span class="badge badge-dark ' + (passOK ? 'good' : 'bad') + '">' +
+      (passOK ? 'ผ่านเกณฑ์ RR ที่ตั้งไว้' : 'ต่ำกว่าเกณฑ์ RR ที่ตั้งไว้') + '</span>';
+
+    // direction sanity check
+    var dirWarnWrap = document.getElementById('rrDirWarning');
+    var thWarnWrap = document.getElementById('rrThresholdWarning');
+    dirWarnWrap.innerHTML = '';
+    thWarnWrap.innerHTML = '';
+
+    var dirWrong = false;
+    if(dir === 'buy' && (sl >= entry || tp <= entry)) dirWrong = true;
+    if(dir === 'sell' && (sl <= entry || tp >= entry)) dirWrong = true;
+
+    if(dirWrong && (sl !== entry || tp !== entry)){
+      dirWarnWrap.innerHTML = '<div class="warning-banner">ตำแหน่ง SL/TP ดูไม่สอดคล้องกับทิศทาง ' + (dir === 'buy' ? 'Buy (SL ควรต่ำกว่า Entry, TP ควรสูงกว่า)' : 'Sell (SL ควรสูงกว่า Entry, TP ควรต่ำกว่า)') + ' — ตรวจสอบราคาอีกครั้ง</div>';
+    } else if(!passOK){
+      thWarnWrap.innerHTML = '<div class="warning-banner warn2">RR ต่ำกว่าเกณฑ์ที่ตั้งไว้ (' + fmtNum(threshold,1) + ':1) พิจารณาขยับ TP ออก หรือ SL ให้แคบลง ก่อนเข้าออเดอร์</div>';
+    }
+  }
+
+  function renderAll(){
+    renderAcctHints();
+    renderLot();
+    renderRR();
+    renderGrid();
+  }
+
+  /* ================= TAB 4: GRID / MARTINGALE CALCULATOR ================= */
+  var GRID_TICK_VALUE = 0.01;       // price units per point (gold: 100 points = $1)
+  var GRID_POINT_VALUE_PER_LOT = 1; // $ per point per 1.0 standard lot (gold standard)
+
+  var gridIds = ['gridDirection','gridEntry1','gridCurrentPrice','gridBaseLot','gridMultiple','gridNearby','gridSL','gridFilledOrders'];
+  var gridEls = {};
+  gridIds.forEach(function(id){ gridEls[id] = document.getElementById(id); });
+
+  // seed fields from stored state
+  gridEls.gridDirection.value = state.grid.direction;
+  gridEls.gridEntry1.value = state.grid.entry1;
+  gridEls.gridCurrentPrice.value = state.grid.currentPrice;
+  gridEls.gridBaseLot.value = state.grid.baseLot;
+  gridEls.gridMultiple.value = state.grid.multiple;
+  gridEls.gridNearby.value = state.grid.nearby;
+  gridEls.gridSL.value = state.grid.sl;
+  gridEls.gridFilledOrders.value = state.grid.filledOrders;
+
+  gridIds.forEach(function(id){
+    gridEls[id].addEventListener('input', onGridInputChange);
+    gridEls[id].addEventListener('change', onGridInputChange);
+  });
+
+  function computeGridTotalOrders(g){
+    if(g.nearby <= 0) return 1;
+    return Math.max(1, Math.floor(g.sl / g.nearby));
+  }
+
+  function onGridInputChange(){
+    state.grid.direction = gridEls.gridDirection.value;
+    state.grid.entry1 = parseFloat(gridEls.gridEntry1.value) || 0;
+    state.grid.currentPrice = parseFloat(gridEls.gridCurrentPrice.value) || 0;
+    state.grid.baseLot = parseFloat(gridEls.gridBaseLot.value) || 0;
+    state.grid.multiple = parseFloat(gridEls.gridMultiple.value) || 1;
+    state.grid.nearby = parseFloat(gridEls.gridNearby.value) || 0;
+    state.grid.sl = parseFloat(gridEls.gridSL.value) || 0;
+
+    var totalOrders = computeGridTotalOrders(state.grid);
+    state.grid.filledOrders = clamp(parseInt(gridEls.gridFilledOrders.value, 10) || 0, 0, totalOrders);
+
+    saveState();
+    renderGrid();
+  }
+
+  function renderGrid(){
+    var g = state.grid;
+    var dir = g.direction;
+    var nearbyPrice = g.nearby * GRID_TICK_VALUE; // convert points -> price units
+    var totalOrders = computeGridTotalOrders(g);
+    var slPrice = dir === 'buy' ? (g.entry1 - g.sl * GRID_TICK_VALUE) : (g.entry1 + g.sl * GRID_TICK_VALUE);
+
+    // reflect derived total orders in the UI (SL hint + filled-orders max)
+    document.getElementById('gridSLHint').textContent = '≈ ราคา SL ' + fmtNum(slPrice, 2) + ' · คำนวณได้ ' + totalOrders + ' ไม้';
+    gridEls.gridFilledOrders.max = totalOrders;
+    document.getElementById('gridFilledHint').textContent = 'ไม้เกินจำนวนนี้จะแสดงแบบจางๆ (ยังไม่เข้า) · สูงสุด ' + totalOrders + ' ไม้ตาม SL';
+
+    var tbody = document.getElementById('gridTableBody');
+    tbody.innerHTML = '';
+
+    var totalLotFilled = 0;
+    var totalPLFilled = 0;
+    var sumLotEntryFilled = 0; // for weighted-average breakeven
+
+    for(var n = 1; n <= totalOrders; n++){
+      var lot = Math.round(g.baseLot * Math.pow(g.multiple, n - 1) * 100) / 100;
+      var entryPrice = dir === 'buy'
+        ? g.entry1 - (n - 1) * nearbyPrice
+        : g.entry1 + (n - 1) * nearbyPrice;
+      var distancePoints = dir === 'buy'
+        ? (g.currentPrice - entryPrice) / GRID_TICK_VALUE
+        : (entryPrice - g.currentPrice) / GRID_TICK_VALUE;
+      var pl = lot * distancePoints * GRID_POINT_VALUE_PER_LOT;
+      var isFilled = n <= g.filledOrders;
+
+      if(isFilled){
+        totalLotFilled += lot;
+        totalPLFilled += pl;
+        sumLotEntryFilled += lot * entryPrice;
+      }
+
+      var tr = document.createElement('tr');
+      tr.className = isFilled ? '' : 'row-pending';
+      var plClass = pl > 0 ? 'pl-good' : (pl < 0 ? 'pl-bad' : '');
+      var distSign = distancePoints > 0 ? '+' : '';
+      tr.innerHTML =
+        '<td>' + n + '</td>' +
+        '<td>' + fmtNum(lot, 2) + '</td>' +
+        '<td>' + fmtNum(entryPrice, 2) + '</td>' +
+        '<td>' + distSign + fmtNum(distancePoints, 0) + ' จุด</td>' +
+        '<td class="' + (isFilled ? plClass : '') + '">' + (pl >= 0 ? '+' : '-') + '$' + fmtNum(Math.abs(pl), 2) + '</td>' +
+        '<td><span class="status-chip ' + (isFilled ? 'filled' : 'pending') + '">' + (isFilled ? 'เข้าแล้ว' : 'ยังไม่เข้า') + '</span></td>';
+      tbody.appendChild(tr);
+    }
+
+    var plEl = document.getElementById('gridTotalPL');
+    plEl.textContent = (totalPLFilled >= 0 ? '+' : '-') + '$' + fmtNum(Math.abs(totalPLFilled), 2);
+    plEl.className = 'summary-value ' + (totalPLFilled > 0 ? 'good' : (totalPLFilled < 0 ? 'bad' : ''));
+    document.getElementById('gridTotalPLTHB').textContent = '≈ ' + fmtTHB(toTHB(totalPLFilled));
+
+    document.getElementById('gridTotalLot').textContent = fmtNum(totalLotFilled, 2);
+
+    var breakeven = totalLotFilled > 0 ? sumLotEntryFilled / totalLotFilled : 0;
+    document.getElementById('gridBreakeven').textContent = fmtNum(breakeven, 2);
+  }
+
+  /* ---------------- init ---------------- */
+  renderTierTable();
+  renderAll();
+})();
+</script>
+</body>
+</html>
